@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Weather Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background: #e6f7ff;
+            border-left: 4px solid #2196f3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Weather Prediction</h1>
+        <form id="weatherForm">
+            <label for="temperature">Temperature (°C):</label><br>
+            <input type="number" id="temperature" required><br>
+            <label for="humidity">Humidity (%):</label><br>
+            <input type="number" id="humidity" required><br>
+            <label for="windSpeed">Wind Speed (km/h):</label><br>
+            <input type="number" id="windSpeed" required><br>
+            <button type="submit">Predict</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function calculateWeatherIndex(T, H, W) {
+            return (0.5 * Math.pow(T, 2)) - (0.2 * H) + (0.1 * W) - 15;
+        }
+
+        function classifyWeather(index) {
+            if (index > 25) return "Sunny";
+            if (index > 15) return "Cloudy";
+            if (index > 5) return "Rainy";
+            if (index > -5) return "Stormy";
+            return "Snow";
+        }
+
+        document.getElementById("weatherForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const T = parseFloat(document.getElementById("temperature").value);
+            const H = parseFloat(document.getElementById("humidity").value);
+            const W = parseFloat(document.getElementById("windSpeed").value);
+            const index = calculateWeatherIndex(T, H, W);
+            const category = classifyWeather(index);
+            document.getElementById("result").innerHTML = `
+                <div class="result">
+                    <strong>Weather Index:</strong> ${index.toFixed(2)}<br>
+                    <strong>Weather Category:</strong> ${category}
+                </div>`;
+        });
+    </script>
+</body>
+</html>
